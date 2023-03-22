@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.distributions import Categorical
-
+import logging
 
 parser = argparse.ArgumentParser(description='PyTorch REINFORCE example')
 parser.add_argument('--gamma', type=float, default=0.99, metavar='G',
@@ -19,9 +19,24 @@ parser.add_argument('--render', action='store_true',
                     help='render the environment')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='interval between training status logs (default: 10)')
+parser.add_argument('--log', default="WARN",
+                    help='render the environment')
+
+
 args = parser.parse_args()
 
+numeric_level = getattr(logging, args.log.upper(), None)
+if not isinstance(numeric_level, int):
+    raise ValueError('Invalid log level: %s' % args.log)
+logging.basicConfig(level=numeric_level)
 
+
+logging.warning("test warning")
+logging.debug("test debug")
+logging.info("test info")
+logging.error("test error")
+
+quit()
 env = gym.make('CartPole-v1')
 env.reset(seed=args.seed)
 torch.manual_seed(args.seed)
